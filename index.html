@@ -17,7 +17,43 @@
       background-repeat: no-repeat;
       background-size: cover;
     }
+
+    .controls {
+      position: absolute;
+      top: 75%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   </style> 
 </head>
 <body class="bg">
+  <div class="controls">
+    <input type="text" id="inputText">
+    <button id="submitButton">Ask Baldie</button>
+    <div id="response"></div>
+  </div>
+  <script>
+    const inputText = document.getElementById('inputText');
+    const submitButton = document.getElementById('submitButton');
+    const responseDiv = document.getElementById('response');
+
+    submitButton.addEventListener('click', async () => {
+      const question = inputText.value;
+      inputText.value = '';  // Clear input
+
+      try {
+        const apiResponse = await fetch('https://us-west1-personal-website-329513.cloudfunctions.net/askBaldie', {
+          method: 'POST',
+          body: JSON.stringify({ "question": question }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const apiData = await apiResponse.text();
+        
+        responseDiv.textContent = apiData;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    });
+  </script>
 </body>
+</html>
