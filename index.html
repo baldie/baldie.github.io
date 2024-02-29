@@ -7,13 +7,8 @@
     }
     
     .bg {
-      /* The image used */
       background-image: url("baldie0.png");
-    
-      /* Full height */
       height: 100%;
-    
-      /* Center and scale the image nicely */
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -26,19 +21,17 @@
       transform: translate(-50%, -50%);
     }
 
-    /* Style the input field */
     input[type="text"] {
       width: 100%; 
       padding: 12px;
       margin-bottom: 10px; 
       border: 1px solid #ccc;
       border-radius: 4px; 
-      box-sizing: border-box; /* Ensures padding is included in width */
+      box-sizing: border-box; 
     }
     
-    /* Style the button */
     button {
-      background-color: #007bff; /* Blue background */
+      background-color: #007bff; 
       color: white;
       padding: 10px 20px;
       border: none;
@@ -48,15 +41,28 @@
     }
     
     button:hover {
-      background-color: #0056b3; /* Darker blue on hover */
+      background-color: #0056b3;
     }
     
-    /* Style the response div */
     #response {
       margin-top: 15px;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
+    }
+
+    .loader { 
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style> 
 </head>
@@ -64,7 +70,11 @@
   <div class="controls">
     <input type="text" id="inputText">
     <button id="submitButton">Ask Baldie</button>
-    <div id="response"></div>
+    <div id="response">
+      <div id="spinner" style="display: none;">
+        <div class="loader"></div> 
+      </div>
+    </div>
   </div>
   <script>
     const inputText = document.getElementById('inputText');
@@ -76,14 +86,16 @@
       inputText.value = '';  // Clear input
 
       try {
-        const apiResponse = await fetch('https://us-west1-personal-website-329513.cloudfunctions.net/askBaldie', {
+        fetch('https://us-west1-personal-website-329513.cloudfunctions.net/askBaldie', {
           method: 'POST',
           body: JSON.stringify({ "question": question }),
           headers: { 'Content-Type': 'application/json' }
-        });
-        const apiData = await apiResponse.text();
-        
-        responseDiv.textContent = apiData;
+        }).then(apiResponse => apiResponse.text());
+          .then(apiData => {
+            responseDiv.textContent = apiData;
+          }).finally(() => {
+              spinner.style.display = 'none';
+          });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
