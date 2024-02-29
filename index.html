@@ -97,11 +97,13 @@
     const inputText = document.getElementById('inputText');
     const submitButton = document.getElementById('submitButton');
     const responseDiv = document.getElementById('response');
+    const spinner = document.getElementById('spinner'); 
 
     submitButton.addEventListener('click', async () => {
       const question = inputText.value;
       inputText.value = '';  // Clear input
 
+      spinner.style.display = 'block';
       try {
         fetch('https://us-west1-personal-website-329513.cloudfunctions.net/askBaldie', {
           method: 'POST',
