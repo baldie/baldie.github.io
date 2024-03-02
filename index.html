@@ -1,92 +1,13 @@
 <!DOCTYPE html>
+<!--Why are you inspecting my code?-->
 <html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
   <meta charset="UTF-8">
   <meta name="google" content="notranslate">
   <meta http-equiv="Content-Language" content="en">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="shortcut icon" href="/favicon.ico">
-  <style>
-    body, html {
-      height: 100%;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    
-    .bg {
-      background-image: url("baldie_compressed.jfif");
-      height: 100%;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-    .controls {
-      position: absolute;
-      top: 60%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    input[type="text"] {
-      width: 100%; 
-      padding: 12px;
-      margin-bottom: 10px; 
-      border: 1px solid #ccc;
-      border-radius: 4px; 
-      box-sizing: border-box; 
-    }
-    
-    button {
-      background-color: #007bff; 
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      width: 100%;
-    }
-    
-    button:hover {
-      background-color: #0056b3;
-    }
-    
-    #response {
-      margin-top: 15px;
-      padding: 10px;
-      text-align: center;
-      border-radius: 4px;
-    }
-
-    .loader { 
-      position: absolute;
-      top: 70%;
-      left: 50%;
-      transform: translate(-50%, -30%);
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%; 
-      text-align: center;
-      background-color: #f0f0f0BB; 
-      padding: 10px 0;
-    }
-    
-    #disclaimer {
-      font-size: 0.8em; 
-      color: #666;
-    }
+  <style type="text/css">
+    .controls,.loader{position:absolute}#response,footer{text-align:center}body,html{height:100%;font-family:Arial,Helvetica,sans-serif}.bg{background-image:url("baldie_compressed.jfif");height:100%;background-position:center;background-repeat:no-repeat;background-size:cover}.controls{top:60%;left:50%;transform:translate(-50%,-50%)}input[type=text]{width:100%;padding:12px;margin-bottom:10px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}button{background-color:#007bff;color:#fff;padding:10px 20px;border:none;border-radius:4px;cursor:pointer;width:100%}button:hover{background-color:#0056b3}#response{margin-top:15px;padding:10px;border-radius:4px}.loader{top:75%;left:40%;transform:translate(-50%,-25%);border:4px solid #f3f3f3;border-top:4px solid #3498db;border-radius:50%;width:30px;height:30px;animation:1s linear infinite spin}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}footer{position:fixed;bottom:0;width:100%;background-color:#f0f0f0BB;padding:10px 0}#disclaimer{font-size:.8em;color:#666}
   </style> 
 </head>
 <body class="bg">
@@ -102,7 +23,14 @@
     const inputText = document.getElementById('inputText');
     const submitButton = document.getElementById('submitButton');
     const responseDiv = document.getElementById('response');
-    const spinner = document.getElementById('spinner'); 
+    const spinner = document.getElementById('spinner');
+
+    inputText.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        submitButton.click();
+      }
+    });
 
     submitButton.addEventListener('click', async () => {
       const question = inputText.value;
