@@ -44,7 +44,7 @@
           body: JSON.stringify({ "question": question }),
           headers: { 'Content-Type': 'application/json' }
         }).then(apiResponse => {
-          responseDiv.textContent = apiResponse.headers.get('X-Baldie-Answer');
+          responseDiv.textContent = decodeURIComponent(apiResponse.headers.get('X-Baldie-Answer'));
           return apiResponse.arrayBuffer();
           }).then(arrayBuffer => {
             audioContext.decodeAudioData(arrayBuffer, (decodedAudioBuffer) => {
