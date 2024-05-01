@@ -33,18 +33,31 @@
     });
 
     submitButton.addEventListener('click', async () => {
+      var answer = '';
+      var i = 0;
+      const typingSpeed = 72;
+      function typeWriter() {
+        if (i < answer.length) {
+          responseDiv.innerHTML += answer.charAt(i);
+          i++;
+          setTimeout(typeWriter, typingSpeed);
+        }
+      }
+      
       const question = inputText.value;
       inputText.value = '';
       responseDiv.textContent = '';
       spinner.style.display = 'block';
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
       try {
         fetch('https://us-west1-personal-website-329513.cloudfunctions.net/askBaldie', {
           method: 'POST',
           body: JSON.stringify({ "question": question }),
           headers: { 'Content-Type': 'application/json' }
         }).then(apiResponse => {
-          responseDiv.textContent = decodeURIComponent(apiResponse.headers.get('X-Baldie-Answer'));
+          answer = decodeURIComponent(apiResponse.headers.get('X-Baldie-Answer'));
+          typeWriter();
           return apiResponse.arrayBuffer();
           }).then(arrayBuffer => {
             audioContext.decodeAudioData(arrayBuffer, (decodedAudioBuffer) => {
